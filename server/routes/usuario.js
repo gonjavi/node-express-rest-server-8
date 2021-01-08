@@ -5,7 +5,27 @@ const app = express();
 const Usuario = require('../models/usuario');
 
 app.get('/usuario', function (req, res) {
-  res.json('get usuario')
+  let desde = req.query.desde || 0;
+  desde = Number(desde);
+
+  let limite = req.query.limite || 5;
+  limite = Number(limite);
+
+  Usuario.find({})
+    .skip(desde)
+    .limit(limite)
+    . exec((err, usuarios) => {
+      if (err) {
+        return res.status(400).json({
+          ok: false,
+          err
+        });
+      }
+      res.json({
+        ok: true,
+        usuarios
+      });           
+    });
 });
 
 app.post('/usuario', function (req, res) {
@@ -35,7 +55,7 @@ app.post('/usuario', function (req, res) {
 
 app.put('/usuario/:id', function (req, res) {
   let id = req.params.id;
-  let body = _.pick(req.body, ['nombre','email','img','role','estado']);
+  let body = _.pick(req.body, ['nombre','email','img','role','estado']); //no actualiza contraseña ni google
 
   Usuario.findByIdAndUpdate(id, body, {new: true, runValidators: true }, (err, usuarioDB) => {
     if (err) {
