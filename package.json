@@ -1,6 +1,9 @@
 {
   "name": "express-rest-server-8",
   "version": "1.0.0",
+  "engines": {
+    "node": "v14.10.1"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
