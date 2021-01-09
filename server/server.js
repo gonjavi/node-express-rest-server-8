@@ -12,11 +12,11 @@ app.use(bodyParser.json());
 //importar rutas de usuario
 app.use(require('./routes/usuario'));
 
-mongoose.connect('mongodb://localhost:27017/cafe', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true
+mongoose.connect('mongodb://localhost:27017/cafe', 
+  { useNewUrlParser: true, useCreateIndex: true }, 
+  (err, res) => {
+  if (err) throw err;
+    console.log('Base de datos en linea'); 
 });
 
 app.listen(process.env.PORT, () => console.log("Escuchando puerto", process.env.PORT));
