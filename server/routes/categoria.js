@@ -2,9 +2,7 @@ const express = require('express');
 let { verificaToken, verificaAdmin_Role } = require('../middlewares/autenticacion');
 let app = express();
 let Categoria = require('../models/categoria');
-const usuario = require('../models/usuario');
 
-// mostrar todas las categorias
 app.get('/categoria', verificaToken, (req, res) => {
   Categoria.find({})
     .sort('descripcion')
@@ -24,9 +22,7 @@ app.get('/categoria', verificaToken, (req, res) => {
     });
 });
 
-// mostrar una categoria por id
 app.get('/categoria/:id', verificaToken, (req, res) => {
-
   let id = req.params.id;
 
   Categoria.findById(id, (err, categoriaDB) => {
@@ -53,7 +49,6 @@ app.get('/categoria/:id', verificaToken, (req, res) => {
   });
 });
 
-// crear nueva categoria
 app.post('/categoria', verificaToken, (req, res) => {
   // regresa la nueva categoria
   // req.usuario
