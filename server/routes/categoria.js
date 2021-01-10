@@ -7,6 +7,7 @@ const usuario = require('../models/usuario');
 // mostrar todas las categorias
 app.get('/categoria', verificaToken, (req, res) => {
   Categoria.find({})
+    .populate('usuario')
     .exec((err, categorias) => {
       if (err) {
         return res.status(500).json({
@@ -26,7 +27,7 @@ app.get('/categoria', verificaToken, (req, res) => {
 app.get('/categoria/:id', verificaToken, (req, res) => {
 
   let id = req.params.id;
-  
+
   Categoria.findById(id, (err, categoriaDB) => {
     if (err) {
       return res.status(500).json({
