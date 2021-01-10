@@ -7,7 +7,8 @@ const usuario = require('../models/usuario');
 // mostrar todas las categorias
 app.get('/categoria', verificaToken, (req, res) => {
   Categoria.find({})
-    .populate('usuario')
+    .sort('descripcion')
+    .populate('usuario', 'nombre email') // solo nombre y email
     .exec((err, categorias) => {
       if (err) {
         return res.status(500).json({
