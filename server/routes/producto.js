@@ -57,6 +57,30 @@ app.get('/producto/:id', verificaToken, (req, res) => {
   });
 });
 
+// Buscar productos
+app.get('/productos/buscar/:termino', verificaToken, (req, res) => {
+  let termino = req.params.termino;
+  // crea una expresion regular basada en termino, la i = insensible a mayusculas
+  let regex = new RegExp(termino, 'i'); 
+
+  Producto.find({ nombre: regex })
+    .populate('categoria', 'nombre')
+    .exec((err, productos) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          err
+        });
+      }
+
+      res.json({
+        ok: true,
+        productos
+      })
+    });
+
+});
+
 app.post('/producto/', verificaToken, (req, res) => {
  
   let body = req.body;
