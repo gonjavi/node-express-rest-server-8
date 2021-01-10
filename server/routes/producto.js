@@ -78,13 +78,6 @@ app.post('/producto/', verificaToken, (req, res) => {
       });
     }
 
-    /* if (!productoDB) {
-      return res.status(400).json({
-        ok: false,
-        err
-      }); 
-    }*/
-
     res.status(201).json({
       ok: true,
       producto: productoDB
@@ -142,7 +135,7 @@ app.delete('/producto/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
       });
     }
 
-    if (!productoDB) {
+    if (!productoDeshabilitado) {
       return res.status(400).json({
         ok: false,
         err: {
@@ -153,7 +146,8 @@ app.delete('/producto/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
 
     res.json({
       ok: true,
-      producto: productoDeshabilitado
+      producto: productoDeshabilitado,
+      mensaje: 'Producto deshabilitado'
     })
   });
   
