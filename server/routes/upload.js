@@ -69,6 +69,7 @@ app.put('/upload/:tipo/:id', function(req, res) {
 function imagenUsuario(id, res, nombreArchivo) {
   Usuario.findById(id, (err, usuarioDB) => {
     if (err) {
+      borraArchivo(nombreArchivo, 'usuarios'); // borrar archivo que se subio si hay error
       return res.status(500).json({
         ok: false,
         err
@@ -76,6 +77,7 @@ function imagenUsuario(id, res, nombreArchivo) {
     }
 
     if (!usuarioDB) {
+      borraArchivo(nombreArchivo, 'usuarios'); // borrar archivo que se subio si usuario no existe
       return res.status(400).json({
         ok: false,
         err: {
@@ -84,11 +86,7 @@ function imagenUsuario(id, res, nombreArchivo) {
       });
     }
 
-    let pathImagen = path.resolve(__dirname, `../../uploads/usuarios/${usuarioDB.img}`);
-    // para ver si ya existe imagen, si existe borrela
-    if (fs.existsSync(pathImagen)) {
-      fs.unlinkSync(pathImagen);
-    }
+    borraArchivo(usuarioDB.img, 'usuarios'); // borrar archivo anterior si existe en uploads
 
     usuarioDB.img = nombreArchivo;
     usuarioDB.save((err, usuarioguardado) => {
@@ -103,5 +101,13 @@ function imagenUsuario(id, res, nombreArchivo) {
 }
 
 function imagenProducto() {}
+
+function borraArchivo(nombreImagen, tipo) {
+  let pathImagen = path.resolve(__dirname, `../../uploads/${tipo}/${nombreImagen}`);
+  // para ver si ya existe imagen, si existe borrela
+  if (fs.existsSync(pathImagen)) {
+    fs.unlinkSync(pathImagen);
+  }
+}
 
 module.exports = app;
