@@ -3,6 +3,7 @@ const fileUpload = require('express-fileupload');
 const app = express();
 
 const Usuario = require('../models/usuario');
+const Producto = require('../models/producto');
 const fs = require('fs');
 const path = require('path');
 
@@ -61,8 +62,13 @@ app.put('/upload/:tipo/:id', function(req, res) {
         ok: false,
         err
       });
-    // imagen cargada  
-   imagenUsuario(id, res, nombreArchivo);
+    // imagen cargada 
+    if (tipo === 'usuarios') {
+      imagenUsuario(id, res, nombreArchivo);
+    } else {
+      imagenProducto(id, res, nombreArchivo);
+    }
+   
   });
 });
 
@@ -100,7 +106,38 @@ function imagenUsuario(id, res, nombreArchivo) {
   });
 }
 
-function imagenProducto() {}
+function imagenProducto(id, res, nombreArchivo) {
+  Producto.findById(id, (err, productoDB) => {
+    if (err) {
+      borraArchivo(nombreArchivo, 'productos'); // borrar archivo que se subio si hay error
+      return res.status(500).json({
+        ok: false,
+        err
+      });
+    }
+
+    if (!productoDB) {
+      borraArchivo(nombreArchivo, 'productos'); // borrar archivo que se subio si usuario no existe
+      return res.status(400).json({
+        ok: false,
+        err: {
+          message: 'Usuario no existe'
+        }
+      });
+    }
+
+    borraArchivo(productoDB.img, 'productos'); // borrar archivo anterior si existe en uploads
+
+    productoDB.img = nombreArchivo;
+    productoDB.save((err, productoguardado) => {
+      res.json({
+        ok: true,
+        producto: productoguardado,
+        img: nombreArchivo
+      });
+    });
+  });
+}
 
 function borraArchivo(nombreImagen, tipo) {
   let pathImagen = path.resolve(__dirname, `../../uploads/${tipo}/${nombreImagen}`);
