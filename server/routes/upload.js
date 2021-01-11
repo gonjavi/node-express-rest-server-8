@@ -59,12 +59,41 @@ app.put('/upload/:tipo/:id', function(req, res) {
         ok: false,
         err
       });
-
-    res.json({
-      ok: true,
-      mensaje: 'Imagen subuda correctamente'
-    });
+    // imagen cargada  
+   imagenUsuario(id, res, nombreArchivo);
   });
 });
+
+function imagenUsuario(id, res, nombreArchivo) {
+  Usuario.findById(id, (err, usuarioDB) => {
+    if (err) {
+      return res.status(500).json({
+        ok: false,
+        err
+      });
+    }
+
+    if (!usuarioDB) {
+      return res.status(400).json({
+        ok: false,
+        err: {
+          message: 'Usuario no existe'
+        }
+      });
+    }
+
+    usuarioDB.img = nombreArchivo;
+    usuarioDB.save((err, usuarioguardado) => {
+      res.json({
+        ok: true,
+        usuario: usuarioguardado,
+        img: nombreArchivo
+      });
+    });
+
+  });
+}
+
+function imagenProducto() {}
 
 module.exports = app;
