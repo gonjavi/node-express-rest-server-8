@@ -3,6 +3,8 @@ const fileUpload = require('express-fileupload');
 const app = express();
 
 const Usuario = require('../models/usuario');
+const fs = require('fs');
+const path = require('path');
 
 // default options
 app.use(fileUpload());
@@ -80,6 +82,12 @@ function imagenUsuario(id, res, nombreArchivo) {
           message: 'Usuario no existe'
         }
       });
+    }
+
+    let pathImagen = path.resolve(__dirname, `../../uploads/usuarios/${usuarioDB.img}`);
+    // para ver si ya existe imagen, si existe borrela
+    if (fs.existsSync(pathImagen)) {
+      fs.unlinkSync(pathImagen);
     }
 
     usuarioDB.img = nombreArchivo;
