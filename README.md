@@ -1,6 +1,6 @@
-# node-express-rest-server-8 Cafe
+# Node-express-rest-server-8 Cafe
 
-This is a basic REST webserver using Node, Express. It uses the methods Get, Post, Put, Delete.
+This is a Cafe REST webserver for users, products, and categories using Node, and Express. It uses the methods Get, Post, Put, Delete.
 
 url: https://gon-node-webserver2.herokuapp.com
 
