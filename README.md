@@ -1,4 +1,4 @@
-# Node-express-rest-server-8 Cafe
+# Node-Express-Rest-Server-8 Cafe
 
 This is a Cafe REST webserver for users, products, and categories using Node, and Express. It uses the methods Get, Post, Put, Delete.
 
