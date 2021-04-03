@@ -2,7 +2,7 @@
 
 This is a basic REST webserver using Node, Express. It uses the methods Get, Post, Put, Delete.
 
-url: https://node-airlines-api.herokuapp.com
+url: https://gon-node-webserver2.herokuapp.com
 
 user endpoints
 - post: login - url/login
